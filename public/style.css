@@ -1,0 +1,26 @@
+body {
+  font-family: 'Montserrat', Verdana, sans-serif;
+  background: #8DA9C4;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background: #2C2C54;
+  margin: 0;
+  color: #EEF4ED;
+}
+header h1 {
+  margin: 0;
+  font-family: 'Petit Formal Script', cursive;
+}
+
+header p {
+  font-weight: 300;
+  font-style: italic;
+}
+
+.friend-display {
+  font: 1.5em;
+}
