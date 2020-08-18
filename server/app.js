@@ -17,9 +17,11 @@ app.use(express.static('client'));
 
 app.use('/api/friends', require('./apiRoutes'));
 
+app.use((err, req, res, next) => {
+  res.send(err);
+})
 
-
-const PORT = 3030;
+const PORT = process.env.port || 3030;
 
 const init = async () => {
   await db.sync();
