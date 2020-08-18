@@ -1,33 +1,38 @@
 //const { post } = require("../server/apiRoutes");
 
+//const { get } = require("../server/apiRoutes");
+
+//const { put } = require("../server/apiRoutes");
+
 const friendList = document.getElementById('friend-list');
 const createFriend = document.getElementById('create-friend-button');
 const friendName = document.getElementById('friend-name');
 
-const generateButtons = (id) => {
+const generateButton = (type, sign, id) => {
+  const button = document.createElement('button');
+  button.formAction = `/api/friends/${id}`;
+  button.className = `${type}-friend`;
+  button.innerText = sign;
+  button.type = 'button';
+  return button;
+}
+const generateForm = (id) => {
   const form = document.createElement('form');
   form.className = 'friend-actions';
-  const addButton = document.createElement('button');
-  addButton.innerText = '+';
-  addButton.id = 'increment-rating';
-  const subtractButton = document.createElement('button');
-  subtractButton.innerText = '-';
-  subtractButton.id = 'decrement-rating';
-  const deleteButton = document.createElement('button');
-  deleteButton.innerText = 'x';
-  deleteButton.id = 'delete-friend';
-  [addButton, subtractButton, deleteButton].forEach(elem => {elem.formAction = `/api/friends/${id}`});
-  form.append(addButton, subtractButton, deleteButton);
+  const buttons = [ generateButton('increment', '+', id),
+    generateButton('decrement', '-', id),
+    generateButton('delete', 'x', id) ];
+  form.append(...buttons);
   return form;
 }
 
 const loadData = (data) => {
   data.forEach( elem => {
-    const friend = document.createElement('li');
-    const rating = document.createElement('p');
+    let friend = document.createElement('li');
+    let rating = document.createElement('p');
     rating.innerText = elem.rating;
     friend.innerText = elem.name;
-    const form = generateButtons(elem.id);
+    let form = generateForm(elem.id);
     friend.append(rating, form);
     friendList.appendChild(friend);
   });
@@ -38,18 +43,47 @@ const getData = async () => {
   const data = await response.json();
   loadData(data);
 }
-/* createFriend.addEventListener('click', async () => {
-  console.log('name:', friendName.value);
-  //const name = friendName.value;
-  const response = await fetch('/api/friends', {
-    method: 'post',
-    body: {
-      name: friendName.value
-    },
-    redirect: 'follow'
-  })
-  const data = await response.json();
-}) */
+
+const clearElement = (parent) => {
+  while (parent.firstChild) {
+    parent.removeChild(parent.firstChild);
+  };
+}
+
+
+friendList.addEventListener('click', async (e) => {
+  if (e.target.tagName === 'BUTTON') {
+    let response;
+    if (e.target.className.includes('increment')) {
+      response = await fetch(e.target.formAction, {
+        method: 'put',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          type: 'add'
+        })
+      });
+      console.log('incremented');
+    } else if (e.target.className.includes('decrement')) {
+      response = await fetch(e.target.formAction, {
+        method: 'put',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          type: 'subtract'
+        })
+      });
+      console.log('decremented');
+    } else {
+      response = await fetch(e.target.formAction, { method: 'delete'});
+      console.log('deleted');
+    };
+    let data = await response.json();
+    clearElement(friendList);
+    loadData(data);
+  }
+})
 
 getData();
-

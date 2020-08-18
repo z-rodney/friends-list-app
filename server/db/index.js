@@ -21,14 +21,17 @@ const Friend = db.define('friend', {
    return this.findAll({
      order: [['rating', 'DESC']]
    });
+
  };
 
  Friend.prototype.add = function() {
-   ++this.rating;
+  this.increment('rating', {by: 1});
+  this.reload();
  };
 
  Friend.prototype.subtract = function() {
-  --this.rating;
+  this.decrement('rating', {by: 1});
+  this.reload();
 }
 
  module.exports = {

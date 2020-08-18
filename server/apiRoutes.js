@@ -25,13 +25,28 @@ router.post('/', async (req, res, next) => {
 router.put('/:id', async (req, res, next) => {
   try {
     const friend = await Friend.findOne({ where: { id: req.params.id } });
+    console.log(req.body);
     req.body.type === 'add' ? friend.add() : friend.subtract();
+    const data = await Friend.findAndOrder();
+    res.send(data)
+  } catch(err) {next(err)};
+});
+
+router.put('/:id', async (req, res, next) => {
+  try {
+    let friend = await Friend.findOne({ where: { id: req.params.id } });
+    console.log(req.body);
+    req.body.type === 'add' ? friend.add() : friend.subtract();
+    const data = await Friend.findAndOrder();
+    res.send(data)
   } catch(err) {next(err)};
 });
 
 router.delete('/:id', async (req, res, next) => {
   try {
     await Friend.destroy({ where: { id: req.params.id } });
+    const data = await Friend.findAndOrder();
+    res.send(data)
   } catch(err) {next(err)};
 })
 

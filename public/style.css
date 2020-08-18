@@ -29,3 +29,12 @@ header p {
 .friend-display {
   font: 1.5em;
 }
+
+#friend-list p, #friend-list form {
+  padding: .2em;
+  margin: 0;
+}
+
+#friend-list li {
+  margin: .5rem 0;
+}
