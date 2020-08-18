@@ -5,11 +5,34 @@ const { db, Friend } = require('./db');
 
 router.get('/', async (req, res, next) => {
   try {
-    const data = await Friend.findAll();
+    const data = await Friend.findAndOrder();
     res.json(data);
   } catch(err) {
     next(err);
   }
+});
+
+router.post('/', async (req, res, next) => {
+  try {
+    //if (req.body.name === '') throw `Name cannot be empty`;
+    await Friend.create({
+      name: req.body.name
+    });
+    res.redirect('/');
+  } catch(err) { next(err) }
+});
+
+router.put('/:id', async (req, res, next) => {
+  try {
+    const friend = await Friend.findOne({ where: { id: req.params.id } });
+    req.body.type === 'add' ? friend.add() : friend.subtract();
+  } catch(err) {next(err)};
+});
+
+router.delete('/:id', async (req, res, next) => {
+  try {
+    await Friend.destroy({ where: { id: req.params.id } });
+  } catch(err) {next(err)};
 })
 
 module.exports = router;

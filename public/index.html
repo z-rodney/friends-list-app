@@ -11,43 +11,30 @@
       <h1>Friends (The List)</h1>
       <p class="tagline">Nosedive: How much do your friends hate you?</p>
     </header>
-    <div class="add-friend">
-      <h2>Add a Friend</h2>
-      <form>
-        <input id="create-friend" name="friend">
-        <button type="submit">Create</button>
-      </form>
+    <div class='content-container'>
+      <div class="add-friend">
+        <h2>Add a Friend</h2>
+        <form action="/api/friends" method="post">
+          <input id="friend-name" name="name">
+          <button id="create-friend-button" type="submit">Create</button>
+        </form>
+      </div>
+      <div>
+        <h2>Your Friends</h2>
+        <ul id="friend-list">
+          <li>
+            <span class="friend-display"> <i class="fas fa-grin-beam"></i> Placeholder name</span>
+            <p>5⭐️⭐️⭐️⭐️⭐️★★★★★
+              <form class="friend-actions">
+                <button>+</button>
+                <button>-</button>
+                <button>x</button>
+              </form>
+            </p>
+          </li>
+        </ul>
+      </div>
     </div>
-    <div>
-      <h2>Your Friends</h2>
-      <ul>
-        <li>
-          <span class="friend-display"> <i class="fas fa-grin-beam"></i> Placeholder name</span>
-          <p>5⭐️⭐️⭐️⭐️⭐️★★★★★
-            <button>+</button>
-            <button>-</button>
-            <button>x</button>
-          </p>
-        </li>
-        <li>
-          <span class="friend-display"><i class="fas fa-meh"></i> Placeholder name</span>
-          <p>6⭐️⭐️⭐️⭐️⭐️⭐️
-            <button>+</button>
-            <button>-</button>
-            <button>x</button>
-          </p>
-        </li>
-        <li>
-          <span class="friend-display"><i class="fas fa-frown"></i> Placeholder name</span>
-          <p>7⭐️⭐️⭐️⭐️⭐️⭐️⭐️
-            <button>+</button>
-            <button>-</button>
-            <button>x</button>
-          </p>
-        </li>
-      </ul>
-    </div>
-
-
+    <script src="index.js"></script>
   </body>
 </html>

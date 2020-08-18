@@ -17,6 +17,19 @@ const Friend = db.define('friend', {
   }
  });
 
+ Friend.findAndOrder = function(){
+   return this.findAll({
+     order: [['rating', 'DESC']]
+   });
+ };
+
+ Friend.prototype.add = function() {
+   ++this.rating;
+ };
+
+ Friend.prototype.subtract = function() {
+  --this.rating;
+}
 
  module.exports = {
    db,

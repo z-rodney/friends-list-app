@@ -4,14 +4,20 @@ const app = express();
 //const pg = require('pg');
 const morgan = require('morgan');
 const { db } = require('./db');
+const bodyParser = require('body-parser')
 
 
 app.use(morgan('dev'));
-app.use(express.json());
+//app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static('public'));
+app.use(express.static('client'));
 
-app.use('/api', require('./apiRoutes'));
+app.use('/api/friends', require('./apiRoutes'));
+
+
 
 const PORT = 3030;
 
