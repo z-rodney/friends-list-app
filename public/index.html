@@ -11,11 +11,11 @@
       <p class="tagline">Nosedive: How much do your friends hate you?</p>
     </header>
     <div class='content-container'>
-      <div class="add-friend">
+      <div id="friend-form-section"class="add-friend">
         <h2>Add a Friend</h2>
         <form action="/api/friends" method="post">
-          <input id="friend-name" name="name">
-          <button id="create-friend-button" type="submit">Create</button>
+          <input id="friend-name" name="name" required="true">
+          <button id="create-friend-button" type="button">Create</button>
         </form>
       </div>
       <div>

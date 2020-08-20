@@ -38,3 +38,7 @@ header p {
 #friend-list li {
   margin: .5rem 0;
 }
+
+.error-msg {
+  color: rgb(83, 3, 3)
+}

@@ -1,12 +1,7 @@
-//const { post } = require("../server/apiRoutes");
-
-//const { get } = require("../server/apiRoutes");
-
-//const { put } = require("../server/apiRoutes");
-
 const friendList = document.getElementById('friend-list');
 const createFriend = document.getElementById('create-friend-button');
 const friendName = document.getElementById('friend-name');
+const formSection = document.querySelector('#friend-form-section');
 
 const generateButton = (type, sign, id) => {
   const button = document.createElement('button');
@@ -16,6 +11,7 @@ const generateButton = (type, sign, id) => {
   button.type = 'button';
   return button;
 }
+
 const generateForm = (id) => {
   const form = document.createElement('form');
   form.className = 'friend-actions';
@@ -24,6 +20,13 @@ const generateForm = (id) => {
     generateButton('delete', 'x', id) ];
   form.append(...buttons);
   return form;
+}
+
+const generateError = (text, parent) => {
+  const p = document.createElement('p');
+  p.innerText = text;
+  p.className = 'error-msg'
+  parent.append(p);
 }
 
 const loadData = (data) => {
@@ -50,6 +53,33 @@ const clearElement = (parent) => {
   };
 }
 
+createFriend.addEventListener('click', async (e) => {
+  if (document.querySelector('.error-msg')) document.querySelector('.error-msg').remove();
+  if (friendName.value) {
+      const response = await fetch('api/friends', {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        method: 'POST',
+        body: JSON.stringify({
+          name: friendName.value
+        })
+      });
+      friendName.value = '';
+      const data = await response.json();
+      if (data.errors) {
+        generateError(data.errors[0].message, formSection)
+      } else {
+        clearElement(friendList);
+        getData();
+      }
+      console.log(data);
+  } else {
+    if (formSection.lastElementChild.tagName !== 'P') {
+      generateError('Name cannot be empty', formSection);
+    }
+  }
+})
 
 friendList.addEventListener('click', async (e) => {
   if (e.target.tagName === 'BUTTON') {
@@ -64,7 +94,6 @@ friendList.addEventListener('click', async (e) => {
           type: 'add'
         })
       });
-      console.log('incremented');
     } else if (e.target.className.includes('decrement')) {
       response = await fetch(e.target.formAction, {
         method: 'put',
@@ -75,15 +104,13 @@ friendList.addEventListener('click', async (e) => {
           type: 'subtract'
         })
       });
-      console.log('decremented');
     } else {
       response = await fetch(e.target.formAction, { method: 'delete'});
-      console.log('deleted');
     };
     let data = await response.json();
     clearElement(friendList);
     loadData(data);
   }
-})
+});
 
 getData();
