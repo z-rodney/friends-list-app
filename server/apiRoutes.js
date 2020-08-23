@@ -27,6 +27,7 @@ router.put("/:id", async (req, res, next) => {
 	try {
 		const friend = await Friend.findOne({ where: { id: req.params.id } })
 		req.body.type === "add" ? friend.add() : friend.subtract()
+		//[PK] ^You forgot `await` here! That's why your +/- buttons are not responsive -- it's racing the `findAndOrder` function!
 		const data = await Friend.findAndOrder()
 		//[PK] Nice! You could also think about doing the ordering on the front-end, that way you don't need to send the entire list back to the client, just the one friend that was created.
 		res.send(data)

@@ -5,6 +5,7 @@ const createFriend = document.getElementById("create-friend-button")
 const friendName = document.getElementById("friend-name")
 const formSection = document.querySelector("#friend-form-section")
 
+//[PK] This modularity 😍😍😍
 const generateButton = (type, sign, id) => {
 	const button = document.createElement("button")
 	button.formAction = `/api/friends/${id}`
@@ -57,6 +58,7 @@ const clearElement = parent => {
 	}
 }
 
+//[PK] Small nitpick -- you could probabyl stand to break up these eventlisteners into smaller functions. (You've done such an amazing job of that everywhere else that you set bar high for yourself!)
 createFriend.addEventListener("click", async e => {
 	if (document.querySelector(".error-msg"))
 		document.querySelector(".error-msg").remove()
@@ -73,7 +75,7 @@ createFriend.addEventListener("click", async e => {
 		friendName.value = ""
 		const data = await response.json()
 		if (data.errors) {
-			//[PK] Wow, nice use of the fetch API
+			//[PK] ^Wow, nice use of the fetch API
 			generateError(data.errors[0].message, formSection)
 		} else {
 			clearElement(friendList)
@@ -114,6 +116,7 @@ friendList.addEventListener("click", async e => {
 			response = await fetch(e.target.formAction, { method: "delete" })
 		}
 		let data = await response.json()
+		//[PK] Clever approach to loading in new data... fortunately React will make this way easier (and more performant!)
 		clearElement(friendList)
 		loadData(data)
 	}
